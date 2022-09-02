@@ -12,13 +12,14 @@ import { LocalAuthGuard } from './auth/guards/local-auth.guard';
 import { RolesGuard } from './auth/guards/roles.guard';
 import { Role } from './auth/roles/role.enum';
 import { Roles } from './auth/roles/roles.decorator';
+import { CreateUserDto } from './users/dto/CreateUserDto';
 
 @Controller()
 export class AppController {
   constructor(private authService: AuthService) {}
 
   @Post('auth/signup')
-  async signup(@Body() body) {
+  async signup(@Body() body: CreateUserDto) {
     return this.authService.signup(body);
   }
 
@@ -30,7 +31,7 @@ export class AppController {
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Get('profile')
-  @Roles(Role.Admin)
+  @Roles(Role.User)
   getProfile(@Request() req) {
     return req.user;
   }
